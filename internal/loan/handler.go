@@ -11,11 +11,11 @@ import (
 )
 
 type LoanHandler struct {
-	loanService IService
+	LoanService IService
 }
 
 func NewLoanHandler(loanService IService) *LoanHandler {
-	return &LoanHandler{loanService: loanService}
+	return &LoanHandler{LoanService: loanService}
 }
 
 func (h *LoanHandler) CreateLoan(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func (h *LoanHandler) CreateLoan(w http.ResponseWriter, r *http.Request) {
 		LoanTerm:        loanRequest.LoanTerm,
 	}
 
-	if err := h.loanService.CreateLoan(r.Context(), &loan); err != nil {
+	if err := h.LoanService.CreateLoan(r.Context(), &loan); err != nil {
 		utils.SendJSONResponse(w, http.StatusInternalServerError, err.Error(), err)
 		return
 	}
@@ -54,7 +54,7 @@ func (h *LoanHandler) GetLoan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	loan, err := h.loanService.GetLoanByID(r.Context(), id)
+	loan, err := h.LoanService.GetLoanByID(r.Context(), id)
 	if err != nil {
 		utils.SendJSONResponse(w, http.StatusNotFound, err.Error(), nil)
 		return
@@ -77,7 +77,7 @@ func (h *LoanHandler) ApproveLoan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.loanService.ApproveLoan(r.Context(), approval); err != nil {
+	if err := h.LoanService.ApproveLoan(r.Context(), approval); err != nil {
 		utils.SendJSONResponse(w, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
@@ -104,7 +104,7 @@ func (h *LoanHandler) InvestLoan(w http.ResponseWriter, r *http.Request) {
 		Amount:     request.Amount,
 	}
 
-	if err := h.loanService.InvestLoan(r.Context(), investment); err != nil {
+	if err := h.LoanService.InvestLoan(r.Context(), investment); err != nil {
 		utils.SendJSONResponse(w, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
@@ -154,7 +154,7 @@ func (h *LoanHandler) DisburseLoan(w http.ResponseWriter, r *http.Request) {
 		FieldOfficerID:  fieldOfficerId,
 	}
 
-	if err := h.loanService.DisburseLoan(r.Context(), disbursement); err != nil {
+	if err := h.LoanService.DisburseLoan(r.Context(), disbursement); err != nil {
 		utils.SendJSONResponse(w, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}

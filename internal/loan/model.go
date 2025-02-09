@@ -51,5 +51,6 @@ type Investment struct {
 	LoanID     int64     `json:"loan_id"`
 	Amount     float64   `json:"amount"`
 	ROI        float64   `json:"roi"`
+	TotalGain  float64   `json:"total_gain"`
 	CreatedAt  time.Time `json:"created_at"`
 }

@@ -57,7 +57,7 @@ func main() {
 		r.Post("/", loanHandler.CreateLoan)
 		r.Get("/{id}", loanHandler.GetLoan)
 		r.Post("/approve", loanHandler.ApproveLoan)
-		r.Post("/invest", loanHandler.InvestLoan)
+		r.Post("/investment", loanHandler.InvestLoan)
 		r.Post("/disburse", loanHandler.DisburseLoan)
 	})
 

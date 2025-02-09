@@ -166,8 +166,13 @@ func (s *LoanService) InvestLoan(ctx context.Context, request Investment) error 
 	}
 
 	request.CreatedAt = time.Now()
-	rate := loan.Rate / 100
-	request.ROI = CalculateROI(loan.PrincipalAmount, rate, request.Amount)
+
+	logrus.Info("calculate ROI and total gain for investor")
+	rateDecimal := loan.Rate / 100
+	roiInvestor, totalGainInvestor := calculateInvestorGain(loan.PrincipalAmount, rateDecimal, request.Amount)
+
+	request.ROI = roiInvestor * 100
+	request.TotalGain = totalGainInvestor
 
 	err = s.repo.CreateInvestment(ctx, &request)
 	if err != nil {
@@ -178,7 +183,7 @@ func (s *LoanService) InvestLoan(ctx context.Context, request Investment) error 
 		loan.Status = Invested
 		loan.UpdatedAt = time.Now()
 
-		logrus.Info("hardcoded url when upload to GCS")
+		logrus.Info("this is hardcoded url, it should be link when upload to GCS")
 		urlAgreementLetter := fmt.Sprintf("https://gcs.com/agreement-letter/loan-%v", loan.ID)
 		loan.AgreementLetter = &urlAgreementLetter
 
@@ -302,10 +307,15 @@ func (s *LoanService) sendAgreementLettersToInvestors(investorIDs []int) error {
 	return nil
 }
 
-func CalculateROI(principalAmount, rate, amountInvested float64) float64 {
-	return (principalAmount * rate) + amountInvested
-}
-
 func CalculateTotalInterest(principalAmount, rate float64) float64 {
 	return principalAmount * (rate / 100)
+}
+
+func calculateInvestorGain(principal, rate, investment float64) (float64, float64) {
+	totalInterest := principal * (rate / 100)
+	investorInterest := (investment / principal) * totalInterest
+	roi := (investorInterest / investment) * 100
+	totalGain := investment + investorInterest
+
+	return roi, totalGain
 }

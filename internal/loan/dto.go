@@ -19,9 +19,9 @@ func (request *CreateLoanRequest) ValidateCreateLoan() (err error) {
 }
 
 type ApprovalRequest struct {
-	LoanId            int64  `json:"loan_id" validate:"required"`
-	FieldValidatorPic string `json:"field_validator_pic" validate:"omitempty""`
-	FieldValidatorID  int    `json:"field_validator_id" validate:"required"`
+	LoanId                int64  `json:"loan_id" validate:"required"`
+	FieldValidatorPicTure string `json:"field_validator_picture" validate:"required"`
+	FieldValidatorID      int    `json:"field_validator_id" validate:"required"`
 }
 
 func (request *ApprovalRequest) ValidateApprovalRequest() (err error) {

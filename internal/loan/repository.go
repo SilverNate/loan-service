@@ -64,10 +64,10 @@ func (r *LoanRepository) UpdateLoan(ctx context.Context, loan *Loan) error {
 
 func (r *LoanRepository) CreateInvestment(ctx context.Context, inv *Investment) error {
 	query := `
-		INSERT INTO investments (loan_id, investor_id, amount, roi, created_at)
-		VALUES ($1, $2, $3, $4, $5) RETURNING id`
+		INSERT INTO investments (loan_id, investor_id, amount, roi, total_gain, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
 	now := time.Now()
-	err := r.db.QueryRowContext(ctx, query, inv.LoanID, inv.InvestorID, inv.Amount, inv.ROI, now).Scan(&inv.ID)
+	err := r.db.QueryRowContext(ctx, query, inv.LoanID, inv.InvestorID, inv.Amount, inv.ROI, inv.TotalGain, now).Scan(&inv.ID)
 	if err != nil {
 		logrus.Errorf("error create investment: %v", err.Error())
 		return err

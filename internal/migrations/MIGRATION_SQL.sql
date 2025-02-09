@@ -37,7 +37,8 @@ CREATE TABLE IF NOT EXISTS investments (
     investor_id INT REFERENCES investors(id) ON DELETE CASCADE,
     loan_id INT,
     amount DECIMAL(15,2) NOT NULL,
-    roi DECIMAL(10,2) not NULL,
+    roi DECIMAL(5,2) NOT NULL,
+    total_gain DECIMAL(15,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
